@@ -32,10 +32,7 @@ urlpatterns = [
     url(r'^about/$', about_page, name='about'),
     url(r'^contact/$', contact_page, name='contact'),
     url(r'^login/$', login_page, name='login'),
-
-    url(r'^cart/$', cart_home, name='cart'),
-
-
+    url(r'^cart/', include(("carts.urls","carts"), namespace='carts')),
     url(r'^register/$', register_page, name='register'),
     url(r'^bootstrap/$', TemplateView.as_view(template_name='bootstrap/example.html')),
     url(r'^products/', include(("products.urls","products"), namespace='products')),
