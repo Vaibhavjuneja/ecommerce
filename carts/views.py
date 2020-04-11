@@ -39,11 +39,23 @@ def  cart_home(request):
 
 
 def cart_update(request):
-    product_id = 1
-    product_obj = Product.objects.get(id=product_id)
-    cart_obj,new_obj = cart.objects.new_or_get(request)
-    cart_obj.products.add(product_obj)
-    cart_obj.title = "add"
-    cart_obj.save()
+    print(request.POST)
+
+    product_id = request.POST.get('product_id')
+    if product_id is not None:
+        try:
+            product_obj = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            print("Product does not exist")
+            return redirect("cart:home")
+
+        cart_obj,new_obj = cart.objects.new_or_get(request)
+        if product_obj in cart_obj.products.all():
+            cart_obj.products.remove(product_obj)
+        else:
+            cart_obj.products.add(product_obj)
+
+    # cart_obj.title = "add"
+    # cart_obj.save()
     return redirect("carts:home")
 
