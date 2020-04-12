@@ -11,16 +11,18 @@ from products.models import Product
 
 class CartManager(models.Manager):
     def new_or_get(self,request):
-        cart_id = request.session.get("card_id,None")
+        cart_id = request.session.get("cart_id",None)
         qs = self.get_queryset().filter(id=cart_id)
         if qs.count()==1:
             new_object = False
+
             cart_obj = qs.first()
             if request.user.is_authenticated and cart_obj.user is None:
                 cart_obj.user = request.user
                 cart_obj.save()
         else:
             new_object = True
+            print("yes i am")
             cart_obj = cart.objects.new(user=request.user)
             request.session['cart_id'] = cart_obj.id
         return cart_obj,new_object
