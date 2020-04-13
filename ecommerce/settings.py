@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     #our apps
     'products',
+    'orders',
     'search',
     'tags',
     'carts',
