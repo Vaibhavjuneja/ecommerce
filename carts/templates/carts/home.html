@@ -34,6 +34,15 @@
       <td><b>Total</b> {{ cart.total }} </td>
   </tr>
 
+
+      <tr>
+    <th colspan="2"></th>
+      <td><b><a class="btn btn-success" href="{% url 'carts:checkout' %}">Checkout</a></b> {{ cart.total }} </td>
+
+  </tr>
+
+
+
   </tbody>
 </table>
 {% else %}
