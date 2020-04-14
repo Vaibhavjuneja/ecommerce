@@ -2,11 +2,21 @@
 
 
 {% block content %}
-<h1>Checkout</h1>
 
-<a>Cart Total: {{ object.cart.total }} </a>
-<a>Shipping Total: {{object.shipping_total}}</a>
-<a>Order Total : {{object.total }}</a>
 
+{% if not billing_profile %}
+
+    Login
+    Continue as guest
+
+
+{% else %}
+    <h1>Checkout</h1>
+
+    <a>Cart Total: {{ object.cart.total }} </a>
+    <a>Shipping Total: {{object.shipping_total}}</a>
+    <a>Order Total : {{object.total }}</a>
+
+{% endif %}
 
 {% endblock %}
