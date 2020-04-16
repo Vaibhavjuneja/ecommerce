@@ -26,7 +26,7 @@ class Order(models.Model):
         shipping_total  = self.shipping_total
         new_total       = math.fsum([cart_total,shipping_total])
         self.total      = new_total
-        self.save()
+        # self.save()/
 
 
         return new_total
