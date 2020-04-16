@@ -12,7 +12,12 @@
         {% include "accounts/snippets/form.html" with form=login_form next_url=request.build_absolute_url %}
     </div>
 <div>
-    <p>    Continue as guest</p>
+    <p>    Continue as guest
+
+        {% url "guest_register" as guest_register_url %}
+             {% include "accounts/snippets/form.html" with form=guest_form next_url=request.build_absolute_url
+             action_url=guest_register_url %}
+    </p>
 </div>
    </div>
 

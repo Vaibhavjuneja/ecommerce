@@ -4,10 +4,10 @@ from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from .forms import LoginForm, RegisterForm,GuestForm
 from django.utils.http import is_safe_url
-
+from .models import GuestEmail
 
 # Create your views here.
-def guest_login_view(request):
+def guest_register_view(request):
     form = GuestForm(request.POST or None)
     context = {
         "form": form
@@ -23,23 +23,15 @@ def guest_login_view(request):
 
     if form.is_valid():
         print(form.cleaned_data)
-        username  = form.cleaned_data.get("username")
-        password  = form.cleaned_data.get("password")
-        user = authenticate(request, username=username, password=password)
-        print(user)
-        #print(request.user.is_authenticated())
-        if user is not None:
-            #print(request.user.is_authenticated())
-            login(request, user)
-            if is_safe_url(redirect_path,request.get_host()):
-                return redirect(redirect_path)
-            else:
-                return redirect("/")
+        email           = form.cleaned_data.get("email")
+        new_guest_email = GuestEmail.objects.create(email= email)
+        request.session['guest_email_id'] = new_guest_email.id
+        if is_safe_url(redirect_path,request.get_host()):
+            return redirect(redirect_path)
         else:
-            # Return an 'invalid login' error message.
-            print("Error")
+            return redirect("/register/")
 
-    return render(request, "accounts/login.html", context)
+    return redirect("/register/")
 
 
 
