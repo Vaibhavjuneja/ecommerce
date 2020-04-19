@@ -59,6 +59,10 @@ def login_page(request):
         if user is not None:
             #print(request.user.is_authenticated())
             login(request, user)
+            try:
+                del request.session['guest_email_id']
+            except:
+                pass
             if is_safe_url(redirect_path,request.get_host()):
                 return redirect(redirect_path)
             else:

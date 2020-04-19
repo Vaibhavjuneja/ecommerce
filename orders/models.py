@@ -2,6 +2,7 @@ import math
 from django.db import models
 from ecommerce.utils import unique_order_id_generator
 from carts.models import cart
+from billing.models import BillingProfile
 
 from django.db.models.signals import pre_save,post_save
 ORDER_STATUS_CHOICES = (
@@ -12,11 +13,13 @@ ORDER_STATUS_CHOICES = (
 )
 
 class Order(models.Model):
+    billing_profile = models.ForeignKey(BillingProfile,on_delete=models.CASCADE,null=True,blank=True)
     cart         = models.ForeignKey(cart,on_delete=models.CASCADE)
     status        = models.CharField(max_length=120,default='created',choices=ORDER_STATUS_CHOICES)
     order_id            = models.CharField(max_length=120,blank=True)
     shipping_total      = models.DecimalField(default=5.90,max_digits=100,decimal_places=2)
     total            = models.DecimalField(default=0.00,max_digits=100,decimal_places=2)
+    active             = models.BooleanField(default=True)
 
 
     def __str__(self):
@@ -47,6 +50,9 @@ def pre_save_create_order_id(sender,instance,*args,**kwargs):
     if not instance.order_id:
         instance.order_id = unique_order_id_generator(instance)
 
+    qs = Order.objects.filter(cart=instance.cart).exclude(billing_profile=instance.billing_profile)
+    if qs.exists():
+        qs.update(active=False)
 pre_save.connect(pre_save_create_order_id,sender=Order)
 
 def post_save_cart_total(sender,instance,created,*args,**kwargs):
