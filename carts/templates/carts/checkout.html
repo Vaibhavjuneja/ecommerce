@@ -23,11 +23,22 @@
 
 
 {% else %}
+
+    {% if not object.shipping_address %}
+
+               {% url "guest_register" as guest_register_url %}
+    {% include 'accounts/snippets/form.html' with form=guest_form next_url=request.build_absolute_uri action_url=guest_register_url %}
+
+
+    {% else %}
+
     <h1>Checkout</h1>
 
     <a>Cart Total: {{ object.cart.total }} </a>
     <a>Shipping Total: {{object.shipping_total}}</a>
     <a>Order Total : {{object.total }}</a>
+
+    {%  endif %}
 
 {% endif %}
 
