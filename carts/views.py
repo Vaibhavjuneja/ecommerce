@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import cart
-from billing.models import BillingProfile
+from billing.models import BillingProfile,BillingProfileManager
 from orders.models import Order
 from products.models import Product
 from accounts.forms import LoginForm,GuestForm
@@ -55,7 +55,7 @@ def checkout_home(request):
     address_form = AddressForm()
     billing_address_form = AddressForm()
 
-    billing_profile,billing_profile_created = BillingProfile.new_or_get(request)
+    billing_profile,billing_profile_created = BillingProfile.objects.new_or_get(request)
 
 
     if billing_profile is not None:

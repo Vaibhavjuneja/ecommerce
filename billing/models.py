@@ -20,7 +20,7 @@ class BillingProfileManager(models.Manager):
             obj, created = self.model.objects.get_or_create(email=guest_email_obj.email)
         else:
             pass
-        return obj
+        return obj,created
 
 
 class BillingProfile(models.Model):
